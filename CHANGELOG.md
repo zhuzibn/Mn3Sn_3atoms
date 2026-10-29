@@ -27,6 +27,13 @@ Use the fields below where useful; omit inapplicable fields:
 - **Description:** Publish the archived Fig. 5 MATLAB source unchanged, with provenance, run instructions, and output protection; retain archived results locally outside Git.
 - **Test Strategy:** Verify SHA-256 hashes for all 14 copied originals and review the staged source and documentation; no new simulation run.
 
+### [RK4 fourth-stage correction] | 2026-10-29
+- **Type:** fix
+- **Description:** Use the full third-stage increment for the fourth RK4 stage of all six spins, restoring fourth-order deterministic integration. Preserve physical parameters, output conventions, archived results, and initial-import checksums.
+- **Motivation:** The archived half-step fourth stage failed analytical fourth-order convergence checks and changed transient trajectories.
+- **Test Strategy:** Actual MATLAB undamped/damped precession tests; nine MATLAB/C trajectory comparisons; 192 diagnostic runs covering Figures 2, 4(a), and 5 at three corrected timesteps plus the archived integrator. Tested switching conclusions survive; the separate Figure 4(b) ferromagnet is excluded at the user’s request.
+- **Reference:** [Verification results and reproduction commands](docs/rk4-verification.md).
+
 ---
 
 ## Section 2: Error & Solution Log

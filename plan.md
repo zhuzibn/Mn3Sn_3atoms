@@ -1,17 +1,12 @@
-# Fig. 2 and Fig. 4 reproduction check
+# RK4 fourth-stage correction and Figures 2, 4, 5 verification
 
 ## Goal and Success Criteria
 
-Check whether the archived Fig. 5 code also represents the Mn3Sn results in
-Figs. 2 and 4 of [1]. Preserve all distributed MATLAB source bytes and archived
-outputs. Use the faster diagnostic implementation explicitly selected by the
-user on 2026-10-29, cross-checked against original MATLAB runs. Distinguish
-agreement with published plots from a complete numerical validation.
-
-Success: quantify the six initial-state destinations in Fig. 2(d), the sign
-cases in Fig. 2(a-c), and the component dynamics of Fig. 4(a). Identify whether
-Fig. 4(b)'s separate ferromagnet is represented. No new ferromagnetic model,
-solver correction, production baseline update, or source refactor is in scope.
+Implement the user-requested six-line fourth-stage correction, preserving the
+LLGS model and all parameters. Compare corrected and archived integration,
+then check timestep convergence of the published switching conclusions [1].
+This continues the earlier audit; its complete record is preserved in
+[docs/fig2-4-original-audit.md](docs/fig2-4-original-audit.md).
 
 ## Model Classification and Equation Family
 
@@ -25,11 +20,10 @@ and spatial nucleation are outside this model.
 
 `main.m`, `conf_file.m`, `constantfile.m`, `field_eta.m`, `LLG_solver.m`,
 `rk4_4llg.m`, both pulse functions, and `theta_mtot.m` were inspected.
-Fig. 5 reproduction is accepted as user-supplied prior evidence, not rerun.
+The previous audit is preserved in docs/fig2-4-original-audit.md. Figure 5 is now included in the new verification.
 The default field is 250 Oe and the first-spin seed is 210 degrees.
 `theta_mtot.m` folds angular sign; use signed post-processing for Fig. 2.
-The fourth integrator stage uses a half step. Preserve this behavior in the
-diagnostic; do not call it a corrected fourth-order Runge-Kutta method.
+The archived fourth stage incorrectly uses a half step. The user explicitly requests its correction to a full third-stage increment for all six spins.
 
 The ODE_LLG_integral README and AGENTS.md were read to identify the separate
 one-spin model boundary. No parameters are transferred from that repository.
@@ -112,125 +106,69 @@ exchange and applied field. No stochastic convention or RNG is applicable.
 
 ## Initial Conditions, Solver, and Outputs
 
-Use the original spherical-coordinate seed construction and normalization
-after every step. Verify the relaxed octupole mapping, predicted from the
-implemented anisotropy to be `phi=60-inita_theta` modulo 360 degrees for these
-six seed states. Thus Fig. 2(a-c) needs first-spin seed 270 degrees, while
-Fig. 4(a)'s initial -150-degree state uses the existing 210-degree seed.
+Use the six first-spin seeds 30, 90, 150, 210, 270, 330 degrees. Their relaxed
+octupole angles are respectively 30, -30, -90, -150, 150, 90 degrees.
+Use signed atan2 of the mean spin; the ideal zero-moment seed has no defined
+initial octupole angle. Retain per-step normalization, pulse indexing,
+sampling and the known saved-time offset. Correct only the fourth-stage state
+from m + dt*k3/2 to m + dt*k3. Piecewise-constant fields are frozen per step.
+No thermal-noise validation or general time-dependent-drive order is claimed.
 
-The diagnostic preserves the four stage locations (0, 1/2, 1/2, 1/2), the
-weights (1,2,2,1)/6, frozen drive per step, and the original step count.
-Save both physical integration times and MATLAB-style linspace labels.
-Store diagnostic code, copied MATLAB inputs, raw CSVs, logs, and figures in
-`.sisyphus/fig2-4-check-20261029/`, separate from archived results.
+Run isolated deterministic diagnostics at 5, 2.5 and 1.25 fs with identical
+physical sampling intervals (0.25 ps), 5 ns duration, drive from 1 to 4 ns.
+Record physical times separately from legacy labels. Keep raw outputs in
+.sisyphus/rk4-verification-20261029/ and retain reproducible validation tools.
+Preserve archived results and SOURCE_SHA256SUMS.
 
 ## Implementation Mapping
 
 | Stage | Implementation | Verification gate |
 |---|---|---|
-| Source/figure mapping | Inspect paper pages 2-5 and active source | Units, signs, observable, initial states identified |
-| Diagnostic kernel | Minimal deterministic C transcription of six-spin fields, RHS, and existing stages | Original MATLAB short-trajectory component error below 1e-10 |
-| Figure cases | Eight 5 ns cases: six positive/positive seeds and two additional sign cases | Finite unit spins; endpoints within 0.1 degree of paper states |
-| Figure comparison | Signed angles and three unnormalized mean-spin components | Compare curve shapes, scales, polarity, and switching times with published figures |
-| Record | Record results and limitations here and export plots | All original distributed checksums pass; no source edits |
+| Correction | Six k3 increments in rk4_4llg.m | Exact six-line diff; CRLF preserved |
+| Integrator check | Constant-field precession, undamped and damped, through the actual MATLAB script | Fourth-order error reduction under timestep halving; archived version fails |
+| Diagnostic check | Adapt existing deterministic C audit to corrected stage and variable dt | MATLAB pilot and driven replays agree within 1e-10 per spin component |
+| Figure runs | Fig. 2: all six seeds and all four sign combinations; Fig. 4(a) components; Fig. 5(a) 175-500 Oe published fields and Fig. 5(b,c) six seeds at 1000 Oe, both current signs | Finite unit spins, endpoints and transition behavior recorded; compare 5/2.5/1.25 fs |
+| Report | Quantitative comparison, plots, README/settings/changelog updates | Distinguish verified Mn3Sn claims from unavailable FM comparison |
 
-Do not claim a later gate passed until its preceding verification passes.
-The diagnostic RHS consumes explicit fields and torque amplitudes. Fields,
-RHS, integrator, and case orchestration stay separate. This is an audit tool,
-not a replacement production solver.
+Proceed to each simulation stage only after the preceding numerical gate.
+The existing fields, explicit RHS, integration, and case orchestration remain
+separate. No new material model or structure builder is involved.
 
 ## Verification and Acceptance Criteria
 
-The original 20 ps pilot ran in 9.90 s of MATLAB computation. Export its
-sampled vectors and cross-check against C. Also replay short trajectories
-from driven states to check switching-region dynamics and current/field signs
-against unchanged MATLAB kernels. Use maximum absolute spin-component error
-below 1e-10 as a strict transcription check, not as a discretization-error
-bound. Require sampled norm errors below 1e-12.
+- Analytical constant-field test: normalized RK4 global error should decrease
+  approximately 16-fold per timestep halving (observed order 3.8-4.2).
+- MATLAB/C transcription: maximum absolute spin-component discrepancy <1e-10
+  over 20 ps pilot and driven replays, including Fig. 5 regimes.
+- Sampled spin-norm error <1e-12; every sample finite.
+- Fig. 2/Table I: all six initial states reach +30, -150, -30, +150 degrees
+  for (+J,+H), (+J,-H), (-J,-H), (-J,+H), within 0.1 degree [1].
+- Fig. 4(a): negative-to-positive mean z, approximately 1e-3 components,
+  subnanosecond transition after drive onset [1, p. 134433-5]. Full FM
+  comparison remains unavailable; compare Mn3Sn polarity with published FM.
+- Fig. 5(a): test all published fields 175, 200, 225, 250, 275, 300, 325,
+  350, 375, 400, 450, 500 Oe at +5e10 A/m2, seed 210 degrees. Report the
+  boundary bracket rather than assume the published approximately 275 Oe.
+- Fig. 5(b,c): all six seeds at +1000 Oe and +/-5e10 A/m2 should reach
+  near +90 degrees after pulse removal, independent of current sign [1].
+  Distinguish the driven plateau from the relaxed endpoint.
+- Timestep convergence: identical destinations, switching-time changes below
+  1 ps, and mean-spin differences below 1e-5 at common physical sample times.
+  If a boundary case fails, refine the boundary and report sensitivity instead
+  of hiding the failure or changing the physical model.
 
-For Fig. 2(a-c), expected final angles are +30, -150, and -30 degrees.
-All six Fig. 2(d) seeds should end at +30 degrees [1, Fig. 2 and Table I].
-Fig. 4(a) should show negative-to-positive z polarity with component scale
-around 1e-3 [1, Fig. 4]. Figure reading is approximate: no numerical reference
-dataset has been supplied, so do not report curve-wise quantitative identity.
+### Completed verification (2026-10-29)
 
-### Completed results (2026-10-29)
-
-The diagnostic reproduced all eight tested switching destinations and the
-published transient shapes on visual comparison. The raw CSVs are the full
-5 ns **C diagnostic** trajectories; original MATLAB was run for the 20 ps
-pilot and four 20 ps driven-state replays, not for all full-length cases.
-
-| Case | Relaxed initial octupole | J (A/m2) | H (Oe) | Final angle (degrees) |
-|---|---:|---:|---:|---:|
-| Fig. 2(a) | +150 | +5e10 | +100 | +29.99999959 |
-| Fig. 2(b) | +150 | +5e10 | -100 | -150.00000041 |
-| Fig. 2(c) | +150 | -5e10 | -100 | -29.99999959 |
-| Fig. 2(d), other seeds | +90, +30, -30, -90, -150 | +5e10 | +100 | all +29.99999959 |
-
-All samples were finite, and the maximum sampled unit-vector norm error was
-2.22e-16. Before pulse removal, the positive-current, positive-field cases
-approached approximately +18.95 degrees; after removal they relaxed to +30.
-The initial-state mapping was verified from the relaxed trajectories:
-
-| Desired octupole angle | `inita_theta` in degrees |
-|---|---:|
-| +150 | 270 |
-| +90 | 330 |
-| +30 | 30 |
-| -30 | 90 |
-| -90 | 150 |
-| -150 | 210 |
-
-The pilot's maximum absolute spin-component difference between original
-MATLAB and the diagnostic was 6.57e-14. Four driven replays started at the
-diagnostic state at 1.5 ns and lasted 20 ps. Their maximum differences were
-4.79e-12 (Fig. 2(a)), 1.33e-12 (Fig. 2(b)), 1.33e-12 (Fig. 2(c)), and
-4.79e-12 (Fig. 4(a)). The C replays exactly matched the corresponding saved
-segments of the full C trajectories. All were below the 1e-10 gate.
-
-For Fig. 4(a), the default 210-degree first-spin seed produces the required
--150-degree relaxed octupole. With field changed to +100 Oe, its mean z
-component crosses zero at approximately 1.39925 ns. Before the drive,
-`moct=(approximately 0,-0.00173050,-0.00299732)`; after final relaxation,
-`moct=(approximately 0,+0.00173050,+0.00299732)`. The driven y-component peak
-is approximately 0.00349170 and the driven z plateau approximately 0.00327417.
-These signs, scales, and transient shapes agree visually with [1, Fig. 4(a)].
-
-The ideal 120-degree seed has a startup transient absent from the flat initial
-trace drawn in the paper. An additional 5 ns diagnostic initialized with the
-same model's relaxed state at 0.9 ns removes that transient. Its maximum
-spin-component difference from the original-seed trajectory after the 1 ns
-drive onset was 5.97e-10. Both initialization variants are retained and labeled.
-The equilibrated-seed plot establishes that no field or torque change is
-needed to obtain the flat initial segment; the paper's exact initialization
-procedure is not independently established.
-
-Fig. 4(b) remains **outside this repository's implemented model**. It uses a
-perpendicular ferromagnet, J=7e11 A/m2 and H=400 Oe [1, Fig. 4(b)]. The generic
-LLGS vector equation can be reused, but `field_eta.m` currently hardcodes
-three different Mn anisotropy axes and antiferromagnetic exchange/DMI; merely
-changing J and H does not turn it into that ferromagnetic simulation.
-
-Artifacts in `.sisyphus/fig2-4-check-20261029/`:
-
-- `fig2-diagnostic.png`: all four Fig. 2 panels.
-- `fig4a-diagnostic.png`: Fig. 4(a) components including original-seed startup.
-- `fig4a-equilibrated-diagnostic.png`: equilibrated-seed Fig. 4(a) comparison.
-- `results.csv`, `results.json`, `features.json`: measured endpoints and features.
-- `matlab-crosschecks.json`, `validation.log`, `pilot/matlab.csv`, and
-  `replay_*/matlab.csv`: original-MATLAB comparison evidence.
-- `diagnostic.c`, `provenance.json`, case CSVs, seeds, copied `.m` files, and
-  MATLAB plotting/validation scripts: local reproducibility inputs.
-
-The diagnostic was compiled with
-`gcc -O3 -std=c11 -Wall -Wextra -ffp-contract=off diagnostic.c -lm -o diagnostic`.
-For example, from that output directory, Fig. 2(a) was run with
-`./diagnostic fig2a.csv 270 0.01 5e10 5 1 3`.
-The original-source checksum check and `git diff --check` passed. No original
-MATLAB source or archived result was changed. Existing README.md and AGENTS.md
-edits were preserved. This audit adds this plan/results record; no README or
-changelog behavior update is needed because production behavior is unchanged.
+The six-line correction is complete. Both analytical MATLAB tests demonstrate
+fourth-order convergence; the archived variant fails that gate. The pilot and
+eight driven MATLAB/C comparisons pass (maximum spin error 8.89e-12).
+All 192 full-length diagnostic trajectories are finite and normalized.
+All 48 physical cases pass timestep convergence, with maximum mean-spin
+changes 2.14e-9 and 1.34e-10 for successive halvings. Figure 2 destinations,
+Figure 4(a) polarity, and Figure 5 final-state selection survive. Figure 4(b)
+is excluded from numerical verification at the user’s explicit request. During the 1000 Oe
+pulse, opposite current signs give different tilt angles; only their relaxed
+final states coincide. See [the full results](docs/rk4-verification.md).
 
 ## References
 
@@ -246,14 +184,18 @@ for context; the publication supplies the quantitative evidence.
 
 ## Assumptions, Missing References, Risks, and Approval Questions
 
-- User approved the faster diagnostic plus original-MATLAB cross-checks in
-  this conversation. This record makes that selected audit scope concrete.
-- Existing README.md and AGENTS.md edits are unrelated and preserved.
-- Preserve the archived half-step fourth stage. No timestep-convergence or
-  complete scientific-validation claim is authorized by a matching plot.
-- Fig. 4(b) is a different model. Its complete ferromagnetic parameter set is
-  REFERENCE MISSING in the inspected main paper and this repository; do not
-  invent it or substitute another paper's parameter set.
-- Report full-length diagnostic runs separately from original MATLAB runs.
-- No outstanding design approval is required within the user's selected audit
-  scope. A new production model or solver correction would be a separate task.
+- The current user request explicitly authorizes the narrow RK4 correction
+  and figure verification. It supersedes the prior audit's preserve-bug scope.
+  No substantial physics changes are proposed.
+- Class 5 degrees of freedom are already established by the preceding audit:
+  six stored unit vectors, one active noncollinear three-sublattice macrospin.
+- The user explicitly excluded verification of the ferromagnetic curve.
+  Fig. 4(b) ferromagnetic parameters remain REFERENCE MISSING after consulting
+  the indexed paper summary, source PDF and repository. No FM model is added.
+- Published numerical trace data are unavailable. Plot agreement is qualitative;
+  convergence and endpoint comparisons provide independent numerical evidence.
+- Equations consulted: spintronic_methods.tex and sections/llg_equation.tex
+  (eq:llg-gilbert and eq:ll-with-flt), sections/material_parameters.tex
+  (Mn3Sn table). These corroborate unchanged conventions, not new physics.
+- Exact figure evidence comes from the indexed source PDF, printed pp. 3-5,
+  including direct visual inspection of p. 5, plus its reviewed summary.

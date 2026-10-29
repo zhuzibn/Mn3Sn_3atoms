@@ -6,7 +6,10 @@ the interplay between spin polarization and kagome plane in Mn3Sn,”
 Physical Review B **109**, 134433 (2024),
 [DOI: 10.1103/PhysRevB.109.134433](https://doi.org/10.1103/PhysRevB.109.134433).
 The published settings come from Sec. II and Figs. 2 and 4; the MATLAB seed
-mapping and measured results come from the [reproduction audit](plan.md).
+mapping and original measured results come from the
+[archived-integrator audit](docs/fig2-4-original-audit.md).
+The later [RK4 correction verification](docs/rk4-verification.md) supersedes
+the numerical verification scope below; the panel parameter settings remain valid.
 
 The existing three-sublattice LLGS model supports the switching curves in
 Fig. 2 and Fig. 4(a). Fig. 4(b) uses a separate ferromagnetic model that is
@@ -145,7 +148,7 @@ Measured Fig. 4(a) values were approximately:
 - Zero crossing of $m_{{\rm oct},z}$: 1.39925 ns.
 - After final relaxation: $\mathbf m_{\rm oct}=(0,+0.00173050,+0.00299732)$.
 
-## Verification scope and saved evidence
+## Original verification scope and saved evidence (before RK4 correction)
 
 Eight full 5 ns cases were run with a faster C diagnostic preserving the
 archived fields, torques, integration stages, normalization, and pulse
@@ -155,13 +158,15 @@ replays. The largest MATLAB/diagnostic spin-component difference was
 $4.79\times10^{-12}$. Final angles and curve shapes agreed with the paper;
 no digitized reference curves were available for a pointwise error test.
 
-The archived fourth integration stage uses a half-step increment. That
-behavior was preserved; timestep convergence and complete numerical
-validation were not established. Fig. 4(b), with its ferromagnet, current
+The original audit preserved the archived half-step fourth stage; it did not
+establish timestep convergence. The working integrator now uses the corrected
+full-step fourth stage; see the later verification linked above.
+Fig. 4(b), with its ferromagnet, current
 $7\times10^{11}$ A/m$^2$, and field 400 Oe, cannot be obtained by changing
 only the drive settings in this Mn3Sn model.
 
-The full audit is in [plan.md](plan.md). Local plots and raw evidence are in
+The original audit is in [docs/fig2-4-original-audit.md](docs/fig2-4-original-audit.md).
+Local plots and raw evidence are in
 `.sisyphus/fig2-4-check-20261029/`, which is ignored by Git and may be absent
 from a fresh checkout:
 

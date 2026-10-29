@@ -155,13 +155,13 @@ while ct1<totstep
     kk3_Gd2=scal*dmdt_Gd2;
     kk3_Gd3=scal*dmdt_Gd3;
     
-    mmm_Fe1=mmFe1+kk3_Fe1*ts1/2;
-    mmm_Fe2=mmFe2+kk3_Fe2*ts1/2;
-    mmm_Fe3=mmFe3+kk3_Fe3*ts1/2;
+    mmm_Fe1=mmFe1+kk3_Fe1*ts1;
+    mmm_Fe2=mmFe2+kk3_Fe2*ts1;
+    mmm_Fe3=mmFe3+kk3_Fe3*ts1;
 
-    mmm_Gd1=mmGd1+kk3_Gd1*ts1/2;
-    mmm_Gd2=mmGd2+kk3_Gd2*ts1/2;
-    mmm_Gd3=mmGd3+kk3_Gd3*ts1/2;
+    mmm_Gd1=mmGd1+kk3_Gd1*ts1;
+    mmm_Gd2=mmGd2+kk3_Gd2*ts1;
+    mmm_Gd3=mmGd3+kk3_Gd3*ts1;
 
     [hh_Fe1,hh_Fe2,hh_Fe3,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe,hh_Gd1,hh_Gd2,hh_Gd3,sttdlt_Gd,sttflt_Gd...
         ,sotdlt_Gd,sotflt_Gd]=field_eta(hk6,mmm_Fe1,mmm_Fe2,mmm_Fe3,mmm_Gd1,mmm_Gd2,mmm_Gd3,Hk_Fe_z,Hk_Gd_z,Hk_Fe_x,Hk_Gd_x,Demag_,Hext_pulse(1,:,ct1),jc_STT,...

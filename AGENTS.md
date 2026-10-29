@@ -24,8 +24,11 @@
   results without claiming complete published reproduction.
 - For documentation-only changes, cross-check commands and file descriptions
   against the source without launching a simulation. From the repository root,
-  verify the 12 distributed source files with
-  `rg '  (.*\.m|PBSScript)$' SOURCE_SHA256SUMS | sha256sum -c -`.
+  verify the 11 unchanged distributed source files with
+  `rg '  (.*\.m|PBSScript)$' SOURCE_SHA256SUMS | rg -v '  rk4_4llg.m$' | sha256sum -c -`.
+  `rk4_4llg.m` intentionally differs by the six fourth-stage corrections;
+  verify integrator changes with the focused checks documented in
+  `docs/rk4-verification.md` and retain its source line endings.
   The full checksum manifest also requires the two original, untracked result
   files; do not regenerate the manifest to accommodate missing or new outputs.
 - Check documentation impact, `git diff --stat`, and `git diff --check` before

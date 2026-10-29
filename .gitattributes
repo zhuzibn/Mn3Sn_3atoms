@@ -1,0 +1,3 @@
+# Preserve archived source bytes in the Git index and on checkout.
+*.m -text
+PBSScript -text

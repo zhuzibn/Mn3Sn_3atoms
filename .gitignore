@@ -1,0 +1,10 @@
+.sisyphus/
+.venv/
+.ruff_cache/
+**/__pycache__/
+
+# MATLAB editor backups and generated run outputs
+*.asv
+*.m~
+/final.mat
+/result.txt

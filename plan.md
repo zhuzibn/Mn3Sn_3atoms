@@ -1,20 +1,18 @@
-# Current work
+# CQ-03 retained storage: completed
 
-No active implementation remains. The approved CQ-01–CQ-05 migration is complete.
-The user explicitly accepted the 11-case baseline on 2026-11-20. All ten short
-cases and the full 5 ns default preserve every saved spin sample exactly;
-focused interface/output/comparator and analytical checks pass.
+Revision 1 was approved by the user on 2026-11-20 and implemented. Rolling
+six-spin state and retained output replace full state/unused diagnostic histories.
+All 11 accepted cases, five sampling controls, exact text/clocks, analytical
+convergence and nine MATLAB/C comparisons pass. Measured state/diagnostic storage
+is 2.88 MB instead of 312 MB; this is not total process memory.
 
-The [completion report](docs/code-quality-verification.md) retains the adopted
-model, source locators, approval decisions, implementation mapping, commands,
-measurements, output-interface changes and limitations. See the
-[README](README.md) and [benchmark workflow](benchmark/README.md) for current use.
-No commit or push was made; unrelated relocation edits remain preserved.
+See [the completion report](docs/retained-storage-verification.md) for commands,
+artifacts, measurements and the preserved approved specification. Equations,
+defaults, accepted artifacts and import checksums remain unchanged.
 
-Unresolved scientific evidence boundary: **R1**, fresh qualifying verification
-of exact material parameters, easy axes, pair counting, spectator interpretation
-and initial-state mapping. These were preserved from the existing code and
-previous source-reviewed audits; this software migration does not settle them.
-Obtain the specific qualifying sources and an approved model scope before any
-future physical reinterpretation or parameter change. Untested noise, finite
-FLT/STT, intertriplet coupling and additional solvers remain unsupported.
+## Separate backlog
+
+The [existing scientific specification and R1 evidence gap](docs/code-quality-verification.md)
+remain authoritative. Exact material/axis/initial-state attribution, unsupported
+physics, broader publication sweeps and new observables require separate scope;
+none was implemented by this storage task.

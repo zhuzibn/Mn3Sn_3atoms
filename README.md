@@ -46,6 +46,12 @@ drive from 1 to 4 ns, and relaxation until 5 ns. A full default run takes severa
 minutes. `main` always recreates defaults; use the API below for overrides.
 Outputs go to a new `.sisyphus/runs/<unique-id>/` directory printed on completion.
 
+Integration retains the current six spins and requested output rows. The default
+state/diagnostic allocation decreased from 312 MB to 2.88 MB while all 11 accepted
+cases, both clocks and legacy text stayed unchanged; see the
+[storage verification report](docs/retained-storage-verification.md) for the
+measurement scope and reproducible checks.
+
 ## Custom parameters
 
 This complete example is a short illustrative pulse test, not a new validated

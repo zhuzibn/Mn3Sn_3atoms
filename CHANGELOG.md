@@ -40,6 +40,12 @@ Use the fields below where useful; omit inapplicable fields:
 - **Test Strategy:** Explicitly accepted 11-case baseline captured twice; all ten short cases and the full 5 ns default preserve every saved spin sample exactly. Focused input/output/path/comparator failure checks, analytical RK4 precession and nine MATLAB/C comparisons pass. Preserve physics, defaults, archived data and original checksums.
 - **Reference:** [Commands, measurements, compatibility and scientific limits](docs/code-quality-verification.md).
 
+### [Retained trajectory storage] | 2026-11-20
+- **Type:** change
+- **Description:** Retain requested six-spin samples during integration and remove unused diagnostic histories, reducing measured default state/diagnostic storage from 312 MB to 2.88 MB. Output samples, clocks and text remain unchanged.
+- **Test Strategy:** All 11 accepted cases, five dense/subsample controls, analytical convergence and nine MATLAB/C comparisons pass; accepted data and original import checksums are preserved.
+- **Reference:** [Storage verification and measurement scope](docs/retained-storage-verification.md).
+
 ---
 
 ## Section 2: Error & Solution Log

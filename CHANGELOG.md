@@ -34,6 +34,17 @@ Use the fields below where useful; omit inapplicable fields:
 - **Test Strategy:** Actual MATLAB undamped/damped precession tests; nine MATLAB/C trajectory comparisons; 192 diagnostic runs covering Figures 2, 4(a), and 5 at three corrected timesteps plus the archived integrator. Tested switching conclusions survive; the separate Figure 4(b) ferromagnet is excluded at the user’s request.
 - **Reference:** [Verification results and reproduction commands](docs/rk4-verification.md).
 
+### 2026-11-03 | Relocation to D:\spin_dynamics
+- **Type:** change
+- **Description:** Move the checkout and existing local results to `D:\spin_dynamics\Mn3Sn_3atoms`; retain its sibling relationship with `Mn3Sn` and document the new location.
+- **Test Strategy:** Verify every relocated file with SHA-256 and preserve the Git branch, HEAD and pre-existing working-tree changes before updating path documentation. No numerical source changes or simulations.
+
+### 2026-11-03 | Relocation into Git_control
+- **Type:** change
+- **Description:** Move the checkout and existing local results to `D:\Git_control\spin_dynamics\Mn3Sn_3atoms`, preserving the sibling relationship with `Mn3Sn` and updating the documented checkout path.
+- **Test Strategy:** Compare branch, HEAD, status and binary diffs with the pre-move snapshot before path edits; check documentation diffs. No numerical source changes or simulations.
+
+
 ### [CQ-01–CQ-05 deterministic API and regression] | 2026-11-20
 - **Type:** feat
 - **Description:** Add validated `mn3sn_default_config`/`mn3sn_run` inputs, schema-1 results with actual configuration/source/runtime records and physical plus legacy clocks, fresh output directories and protected accepted references. `main` uses the same API; new MAT files contain `result` instead of the whole workspace, and legacy text is written once per run.

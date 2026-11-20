@@ -1,5 +1,8 @@
 # Mn3Sn_3atoms
 
+Local checkout: `D:\Git_control\spin_dynamics\Mn3Sn_3atoms` (`/mnt/d/Git_control/spin_dynamics/Mn3Sn_3atoms` in WSL).
+Existing local data retain their paths relative to this checkout.
+
 MATLAB macrospin code initially copied unchanged from the archived `code/fig5`
 folder associated with [Physical Review B 109, 134433 (2024)](https://doi.org/10.1103/PhysRevB.109.134433).
 The local source archive is `projects/published/2024.04-SOT Mn3Sn-zhengde-PRB/code/fig5`.

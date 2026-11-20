@@ -34,6 +34,12 @@ Use the fields below where useful; omit inapplicable fields:
 - **Test Strategy:** Actual MATLAB undamped/damped precession tests; nine MATLAB/C trajectory comparisons; 192 diagnostic runs covering Figures 2, 4(a), and 5 at three corrected timesteps plus the archived integrator. Tested switching conclusions survive; the separate Figure 4(b) ferromagnet is excluded at the user’s request.
 - **Reference:** [Verification results and reproduction commands](docs/rk4-verification.md).
 
+### [CQ-01–CQ-05 deterministic API and regression] | 2026-11-20
+- **Type:** feat
+- **Description:** Add validated `mn3sn_default_config`/`mn3sn_run` inputs, schema-1 results with actual configuration/source/runtime records and physical plus legacy clocks, fresh output directories and protected accepted references. `main` uses the same API; new MAT files contain `result` instead of the whole workspace, and legacy text is written once per run.
+- **Test Strategy:** Explicitly accepted 11-case baseline captured twice; all ten short cases and the full 5 ns default preserve every saved spin sample exactly. Focused input/output/path/comparator failure checks, analytical RK4 precession and nine MATLAB/C comparisons pass. Preserve physics, defaults, archived data and original checksums.
+- **Reference:** [Commands, measurements, compatibility and scientific limits](docs/code-quality-verification.md).
+
 ---
 
 ## Section 2: Error & Solution Log

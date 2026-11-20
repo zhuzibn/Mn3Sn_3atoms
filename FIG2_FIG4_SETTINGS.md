@@ -15,22 +15,32 @@ The existing three-sublattice LLGS model supports the switching curves in
 Fig. 2 and Fig. 4(a). Fig. 4(b) uses a separate ferromagnetic model that is
 not implemented in this repository.
 
-## Run in a separate source copy
+## Run with the maintained configuration API
 
-Copy the distributed `.m` files into a new directory for each case and edit
-the existing assignments in that copy's `main.m`. Keep each assignment before
-the expressions that use it, particularly pulse generation and initial-spin
-construction. Setting variables before calling `main` does not override its
-parameters because the script starts with `clear`.
+The panel parameters below are unchanged historical inputs. As of 2026-11-20,
+use `mn3sn_default_config` and `mn3sn_run`; do not edit `main.m` or inject workspace
+variables. For example, Fig. 2(a):
 
-Run `main` from the copied source directory. It overwrites `final.mat` and
-appends to `result.txt`; preserve previous results. See [README.md](README.md)
-for execution details. The archived source in the repository was not changed
-for this settings record.
+```matlab
+cfg = mn3sn_default_config();
+cfg.Hext = [0,0.01,0];
+cfg.jc_SOT = 50e9;
+a = 270/180*pi; phi = 90/180*pi;
+angles = a + [0;120/180*pi;240/180*pi];
+cfg.initial_m(1:3,:) = [sin(angles)*cos(phi),sin(angles)*sin(phi),cos(angles)];
+result = mn3sn_run(cfg);
+```
+
+This keeps the original spectator seed and creates a fresh output directory.
+The example was checked against the current interface; no full figure sweep was
+rerun for the API migration. `main` recreates defaults and discards overrides.
+See [README](README.md#custom-parameters) for units, supported inputs and paths.
 
 ## Common settings
 
-Retain the following existing values in every Fig. 2 and Fig. 4(a) case:
+Retain the following existing values in every Fig. 2 and Fig. 4(a) case.
+This table uses historical workspace names: editable names are now `cfg` fields;
+derived fields, polarizations and constants are recorded in `result.effective_inputs`.
 
 | Quantity | MATLAB assignment or value |
 |---|---|
@@ -97,18 +107,18 @@ Use columns 1-3 only. The paper defines the plotted octupole as the average of
 the three unit spins. Preserve its small magnitude for Fig. 4(a); do not
 normalize the average to unit length.
 
-After a run, execute this in its output directory:
+After a new API run, use the returned `result` (or load it from `final.mat`):
 
 ```matlab
-load('final.mat','mmx','mmy','mmz','savestep','tstep');
+mmx=result.mmx; mmy=result.mmy; mmz=result.mmz;
 moct = [mean(mmx(:,1:3),2), ...
         mean(mmy(:,1:3),2), ...
         mean(mmz(:,1:3),2)];
 phi_deg = atan2d(moct(:,2),moct(:,3));
 phi_deg(vecnorm(moct,2,2)<1e-10) = NaN;
 
-% Physical times of the saved states, reconstructed from the step indices.
-t_ns = (0:size(mmx,1)-1)' * savestep * tstep * 1e9;
+% Physical times are saved alongside the unchanged legacy labels.
+t_ns = result.time_s(:)*1e9;
 
 figure;
 plot(t_ns,phi_deg);
@@ -124,16 +134,15 @@ The exact ideal 120-degree seed has zero net moment, so its angle at time zero
 is undefined. The small-moment mask above is for plotting only. Avoid
 `theta_mtot.m` for Fig. 2: it replaces the signed transverse component with a
 nonnegative magnitude and cannot display the required negative angles.
-Reconstructing time from step indices also avoids the archived `linspace`
-time-label discrepancy.
+Using `result.time_s` avoids the archived `linspace` time-label discrepancy.
 
 ## Fig. 4(a): initial relaxation and expected components
 
 The default ideal 120-degree seed produces startup ringing before the drive.
 To obtain the flat initial segment drawn in the paper, initialize a fresh run
 with the six spin vectors at 0.9 ns from a preceding Fig. 4(a) run, using the
-same model and parameters. Assign those vectors to `ma_init1` through
-`mb_init3` after the normal initialization block and before integration.
+same model and parameters. Assign the six x/y/z rows to `cfg.initial_m`
+before calling `mn3sn_run`.
 Retain the 1-4 ns pulse schedule in the fresh run.
 
 In the diagnostic check, this equilibrated initialization changed the driven

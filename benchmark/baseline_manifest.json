@@ -1,0 +1,773 @@
+{
+  "schema": 1,
+  "id": "mn3sn_3atoms-cq-reference-20261120-v3",
+  "status": "accepted",
+  "accepted": true,
+  "acceptance_record": {
+    "at_utc": "2026-11-20T04:22:00.341581+00:00",
+    "instruction": "Accept this baseline and continue",
+    "source": "explicit user reply in this conversation",
+    "proposal_sha256": "1c7314aa1e4fa163890daf42d7a7a5bf2b189af3ea1357512c7feb53821073c3"
+  },
+  "source_git_head": "c141345441feacac73047ae8f811048b2494d824",
+  "proposal_root": ".sisyphus/cq-reference-proposal-20261120-v3",
+  "selected_repeat": 1,
+  "verification_repeat": 2,
+  "selection_note": "Only the 75 explicitly listed artifacts are proposed for promotion. Repeat-2, repeated source copies, raw final.mat workspaces, failed v1/v2 attempts and mutation fixtures are excluded.",
+  "cases": [
+    {
+      "name": "pilot",
+      "suite": "quick",
+      "field_T": 0,
+      "current_Apm2": 0,
+      "runtime_s": 2e-11,
+      "start_s": 0,
+      "width_s": 2e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": true,
+      "seed_file": ""
+    },
+    {
+      "name": "replay_pp",
+      "suite": "quick",
+      "field_T": 0.01,
+      "current_Apm2": 50000000000.0,
+      "runtime_s": 2e-11,
+      "start_s": 0,
+      "width_s": 2e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": true,
+      "seed_file": "seed.csv"
+    },
+    {
+      "name": "replay_pm",
+      "suite": "quick",
+      "field_T": -0.01,
+      "current_Apm2": 50000000000.0,
+      "runtime_s": 2e-11,
+      "start_s": 0,
+      "width_s": 2e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": true,
+      "seed_file": "seed.csv"
+    },
+    {
+      "name": "replay_mm",
+      "suite": "quick",
+      "field_T": -0.01,
+      "current_Apm2": -50000000000.0,
+      "runtime_s": 2e-11,
+      "start_s": 0,
+      "width_s": 2e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": true,
+      "seed_file": "seed.csv"
+    },
+    {
+      "name": "replay_mp",
+      "suite": "quick",
+      "field_T": 0.01,
+      "current_Apm2": -50000000000.0,
+      "runtime_s": 2e-11,
+      "start_s": 0,
+      "width_s": 2e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": true,
+      "seed_file": "seed.csv"
+    },
+    {
+      "name": "replay_275",
+      "suite": "quick",
+      "field_T": 0.0275,
+      "current_Apm2": 50000000000.0,
+      "runtime_s": 2e-11,
+      "start_s": 0,
+      "width_s": 2e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": true,
+      "seed_file": "seed.csv"
+    },
+    {
+      "name": "replay_300",
+      "suite": "quick",
+      "field_T": 0.030000000000000002,
+      "current_Apm2": 50000000000.0,
+      "runtime_s": 2e-11,
+      "start_s": 0,
+      "width_s": 2e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": true,
+      "seed_file": "seed.csv"
+    },
+    {
+      "name": "replay_1000p",
+      "suite": "quick",
+      "field_T": 0.1,
+      "current_Apm2": 50000000000.0,
+      "runtime_s": 2e-11,
+      "start_s": 0,
+      "width_s": 2e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": true,
+      "seed_file": "seed.csv"
+    },
+    {
+      "name": "replay_1000m",
+      "suite": "quick",
+      "field_T": 0.1,
+      "current_Apm2": -50000000000.0,
+      "runtime_s": 2e-11,
+      "start_s": 0,
+      "width_s": 2e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": true,
+      "seed_file": "seed.csv"
+    },
+    {
+      "name": "pulse_edges",
+      "suite": "quick",
+      "field_T": 0.025,
+      "current_Apm2": 50000000000.0,
+      "runtime_s": 2e-11,
+      "start_s": 5e-12,
+      "width_s": 1e-11,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": false,
+      "seed_file": ""
+    },
+    {
+      "name": "default_5ns",
+      "suite": "extended",
+      "field_T": 0.025,
+      "current_Apm2": 50000000000.0,
+      "runtime_s": 5e-09,
+      "start_s": 1e-09,
+      "width_s": 3e-09,
+      "tstep_s": 5e-15,
+      "savestep": 50,
+      "historical": false,
+      "seed_file": ""
+    }
+  ],
+  "environment": {
+    "matlab": "24.2.0.2740171 (R2024b) Update 1",
+    "platform": "PCWIN64",
+    "java": true,
+    "processor_identifier": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+    "logical_processors": 20
+  },
+  "commands": [
+    "addpath('benchmark'); prepare_reference(fullfile(pwd,'.sisyphus','cq-reference-proposal-20261120-v3'),'prepare');",
+    "prepare_reference(fullfile(pwd,'.sisyphus','cq-reference-proposal-20261120-v3'),'capture',1);",
+    "prepare_reference(fullfile(pwd,'.sisyphus','cq-reference-proposal-20261120-v3'),'capture',2);",
+    "prepare_reference(fullfile(pwd,'.sisyphus','cq-reference-proposal-20261120-v3'),'verify');",
+    "check_reference_capture(fullfile(pwd,'.sisyphus','cq-reference-proposal-20261120-v3'));"
+  ],
+  "verification": {
+    "report": "proposal-manifest.json",
+    "report_sha256": "c69b5097a608eab5c8b5d29b3a13db307ef693dca5ce167e7db599fd9107105a",
+    "failure_checks_path": ".sisyphus/cq-v3-mutation-checks.json",
+    "failure_checks_sha256": "6523cc4d0081afd8d03175f809fd2ec39688810ea54c335f118cf3b062779c62",
+    "failure_check_tool_sha256": "c4775263ff1ab539fb897d71c502c3246f1adcec9df333eabdaf599dbcca2ba0",
+    "checks_passed": 15,
+    "unchanged_proposal_files_after_checks": 382,
+    "cases": [
+      {
+        "name": "pilot",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": 4.996003610813204e-16,
+        "historical_c_max_abs": 5.5474722038262314e-14,
+        "elapsed_s": [
+          1.6535488,
+          1.7126733
+        ]
+      },
+      {
+        "name": "replay_pp",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": 4.996003610813204e-16,
+        "historical_c_max_abs": 5.875189202059475e-12,
+        "elapsed_s": [
+          1.5712561,
+          1.7407713
+        ]
+      },
+      {
+        "name": "replay_pm",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": 4.996003610813204e-16,
+        "historical_c_max_abs": 6.151530967350572e-13,
+        "elapsed_s": [
+          1.5982507,
+          1.706706
+        ]
+      },
+      {
+        "name": "replay_mm",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": 5.551115123125783e-16,
+        "historical_c_max_abs": 6.151530967350572e-13,
+        "elapsed_s": [
+          1.6054361,
+          1.7278106
+        ]
+      },
+      {
+        "name": "replay_mp",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 1.1102230246251565e-16,
+        "historical_matlab_max_abs": 5.551115123125783e-16,
+        "historical_c_max_abs": 5.875189202059475e-12,
+        "elapsed_s": [
+          1.6045582,
+          1.6469352
+        ]
+      },
+      {
+        "name": "replay_275",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": 4.996003610813204e-16,
+        "historical_c_max_abs": 1.0174460474143538e-13,
+        "elapsed_s": [
+          1.6549026,
+          1.6232862
+        ]
+      },
+      {
+        "name": "replay_300",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": 4.996003610813204e-16,
+        "historical_c_max_abs": 8.892239541634196e-12,
+        "elapsed_s": [
+          1.6625394,
+          1.6703258
+        ]
+      },
+      {
+        "name": "replay_1000p",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": 5.551115123125783e-16,
+        "historical_c_max_abs": 1.0669798378160067e-12,
+        "elapsed_s": [
+          1.6416191,
+          1.6869363
+        ]
+      },
+      {
+        "name": "replay_1000m",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": 4.996003610813204e-16,
+        "historical_c_max_abs": 1.0669798378160067e-12,
+        "elapsed_s": [
+          1.727526,
+          1.6250399
+        ]
+      },
+      {
+        "name": "pulse_edges",
+        "samples": 80,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": [],
+        "historical_c_max_abs": [],
+        "elapsed_s": [
+          1.5839155,
+          1.6076634
+        ]
+      },
+      {
+        "name": "default_5ns",
+        "samples": 20000,
+        "repeat_spin_max_abs": 0,
+        "norm_max_abs": 2.220446049250313e-16,
+        "historical_matlab_max_abs": [],
+        "historical_c_max_abs": [],
+        "elapsed_s": [
+          437.1194656,
+          447.4816102
+        ]
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "repeat-1/default_5ns/reference.mat",
+      "baseline_path": "cases/default_5ns.mat",
+      "sha256": "9eeee7a58b9cf4a782c05e949f46a829364e8419aba174594ea22489dc089c0f",
+      "bytes": 2028508
+    },
+    {
+      "path": "repeat-1/pilot/reference.mat",
+      "baseline_path": "cases/pilot.mat",
+      "sha256": "e92809e5575a664aaf20c3249d75ad88b53100db25f9d344d3b15d74a49894b4",
+      "bytes": 13955
+    },
+    {
+      "path": "repeat-1/pulse_edges/reference.mat",
+      "baseline_path": "cases/pulse_edges.mat",
+      "sha256": "e376f41de5b657dd3073b00bc007ab6cf3709720e741c8b6a7608dfc00d15ed5",
+      "bytes": 17910
+    },
+    {
+      "path": "repeat-1/replay_1000m/reference.mat",
+      "baseline_path": "cases/replay_1000m.mat",
+      "sha256": "bcca53f1cd075338dac4c44e48ed249757faa65ae2865e07db733a0f66c1b6cf",
+      "bytes": 19012
+    },
+    {
+      "path": "repeat-1/replay_1000p/reference.mat",
+      "baseline_path": "cases/replay_1000p.mat",
+      "sha256": "5309441c9ae6f48b849ff6b16ef7f1fb4af36750ba92e63361a09767785d545d",
+      "bytes": 18999
+    },
+    {
+      "path": "repeat-1/replay_275/reference.mat",
+      "baseline_path": "cases/replay_275.mat",
+      "sha256": "cd5ae5827ab093f2cc4450cd78bc1bfcac9745b488d2f52b27e9a867891a2169",
+      "bytes": 16724
+    },
+    {
+      "path": "repeat-1/replay_300/reference.mat",
+      "baseline_path": "cases/replay_300.mat",
+      "sha256": "5633e9a8e493f3a880c44917f1bee9d42be410014e7f9eb1ed29c04f9f978239",
+      "bytes": 16647
+    },
+    {
+      "path": "repeat-1/replay_mm/reference.mat",
+      "baseline_path": "cases/replay_mm.mat",
+      "sha256": "30da2278da647c3057ea4f7757924bdacc6dd732f3915078b0120dd9ed04d73a",
+      "bytes": 17121
+    },
+    {
+      "path": "repeat-1/replay_mp/reference.mat",
+      "baseline_path": "cases/replay_mp.mat",
+      "sha256": "68c1594b702ad3d1878e3bf049db3c4c154f1fe11cbeca50549b448914d45ed6",
+      "bytes": 16465
+    },
+    {
+      "path": "repeat-1/replay_pm/reference.mat",
+      "baseline_path": "cases/replay_pm.mat",
+      "sha256": "47bf5cc9578618031a188b0a2857b5c1ff34965a35eefc6758b5e2cabe7a9658",
+      "bytes": 17051
+    },
+    {
+      "path": "repeat-1/replay_pp/reference.mat",
+      "baseline_path": "cases/replay_pp.mat",
+      "sha256": "65d6edfa92669d46e3cab64cab0ac5dcd6de8266f65f9465747a705fb92c1344",
+      "bytes": 17203
+    },
+    {
+      "path": "fixtures/default_5ns/initialize.m",
+      "baseline_path": "fixtures/default_5ns/initialize.m",
+      "sha256": "a54a7aa144a47f57f7489f7696a55d80a930adc7592caddeb8b54d127234b918",
+      "bytes": 5524
+    },
+    {
+      "path": "fixtures/pilot/historical-diagnostic.csv",
+      "baseline_path": "fixtures/pilot/historical-diagnostic.csv",
+      "sha256": "6d5107825415cd5e0bc48bee62026069764f04e5fef65c666cbc31df0f405b00",
+      "bytes": 33293
+    },
+    {
+      "path": "fixtures/pilot/historical-matlab.csv",
+      "baseline_path": "fixtures/pilot/historical-matlab.csv",
+      "sha256": "0d6e8f97c8a0ba3691a79e61d9f133eb2863c27a5e01c350468ffa36b8c14db0",
+      "bytes": 28177
+    },
+    {
+      "path": "fixtures/pilot/initialize.m",
+      "baseline_path": "fixtures/pilot/initialize.m",
+      "sha256": "2f1ffaacba6000817f07fd176cd422dc913f9ca8e654f9d51981b59964a54f76",
+      "bytes": 5506
+    },
+    {
+      "path": "fixtures/pulse_edges/initialize.m",
+      "baseline_path": "fixtures/pulse_edges/initialize.m",
+      "sha256": "10cbc73eccd6894d2e98dad1e5ce108ff589dbc04c9cef5427dc6f9b6d63c0fd",
+      "bytes": 5517
+    },
+    {
+      "path": "fixtures/replay_1000m/historical-diagnostic.csv",
+      "baseline_path": "fixtures/replay_1000m/historical-diagnostic.csv",
+      "sha256": "3d75f66fa3e54963428b248e23c632bf79eebf5a1b5b7005a149f2c966dbb3a0",
+      "bytes": 32722
+    },
+    {
+      "path": "fixtures/replay_1000m/historical-matlab.csv",
+      "baseline_path": "fixtures/replay_1000m/historical-matlab.csv",
+      "sha256": "014de4df8b5354a782c4ce98c1a6650b36154399fb327ce6a01adf14d67c600c",
+      "bytes": 28806
+    },
+    {
+      "path": "fixtures/replay_1000m/initialize.m",
+      "baseline_path": "fixtures/replay_1000m/initialize.m",
+      "sha256": "bff59b823ad063926d35be13420bc1dbe35caecc1a535456b09081ef8ed0c652",
+      "bytes": 5535
+    },
+    {
+      "path": "fixtures/replay_1000m/seed.csv",
+      "baseline_path": "fixtures/replay_1000m/seed.csv",
+      "sha256": "b4890bfce93140be40506a008356430a5a5930977edaaf4179d12572836a89d2",
+      "bytes": 363
+    },
+    {
+      "path": "fixtures/replay_1000p/historical-diagnostic.csv",
+      "baseline_path": "fixtures/replay_1000p/historical-diagnostic.csv",
+      "sha256": "2a3d249d62fed7485470657ce77967126a432ffa162d476207ec02ab31df2d9b",
+      "bytes": 32668
+    },
+    {
+      "path": "fixtures/replay_1000p/historical-matlab.csv",
+      "baseline_path": "fixtures/replay_1000p/historical-matlab.csv",
+      "sha256": "362ea6909a41ce24b3b855f1d1012517a63c5e2ad389951a6a5e59b05a5a3dc1",
+      "bytes": 28741
+    },
+    {
+      "path": "fixtures/replay_1000p/initialize.m",
+      "baseline_path": "fixtures/replay_1000p/initialize.m",
+      "sha256": "65d12c6e322c812d4e24ce3ae983f8139bfa9cb921995fe0cfc4601de1fcc30a",
+      "bytes": 5534
+    },
+    {
+      "path": "fixtures/replay_1000p/seed.csv",
+      "baseline_path": "fixtures/replay_1000p/seed.csv",
+      "sha256": "423a2a56b2feeac32f2460710d38c669499a551091547059667d6a1432729d0f",
+      "bytes": 362
+    },
+    {
+      "path": "fixtures/replay_275/historical-diagnostic.csv",
+      "baseline_path": "fixtures/replay_275/historical-diagnostic.csv",
+      "sha256": "3497cde19f613773da94ea06deff49cd8d20d2ea83daf3217076fd2dadc6495c",
+      "bytes": 32919
+    },
+    {
+      "path": "fixtures/replay_275/historical-matlab.csv",
+      "baseline_path": "fixtures/replay_275/historical-matlab.csv",
+      "sha256": "8af0b96887d54e8ce349df23d89b89b1437d04165a9bd589a5a24fe1752cf974",
+      "bytes": 28988
+    },
+    {
+      "path": "fixtures/replay_275/initialize.m",
+      "baseline_path": "fixtures/replay_275/initialize.m",
+      "sha256": "e216e864053a14b26aa3e9991c025078db1a8c18ece69c5bc82f36c9e4a92574",
+      "bytes": 5521
+    },
+    {
+      "path": "fixtures/replay_275/seed.csv",
+      "baseline_path": "fixtures/replay_275/seed.csv",
+      "sha256": "4ace30be678345c7e6741b6a616870994dd7406607761d4d716d6e06ab3b5a06",
+      "bytes": 362
+    },
+    {
+      "path": "fixtures/replay_300/historical-diagnostic.csv",
+      "baseline_path": "fixtures/replay_300/historical-diagnostic.csv",
+      "sha256": "8d8cf224ebd98c5809610fd664f4525efb9330a4f77aefada40c0b778b86e5df",
+      "bytes": 32734
+    },
+    {
+      "path": "fixtures/replay_300/historical-matlab.csv",
+      "baseline_path": "fixtures/replay_300/historical-matlab.csv",
+      "sha256": "75832923ce2b580a1c363b8a76aea12a41b23debb0329dc00818a501da812768",
+      "bytes": 28842
+    },
+    {
+      "path": "fixtures/replay_300/initialize.m",
+      "baseline_path": "fixtures/replay_300/initialize.m",
+      "sha256": "8e0ea1f006a19c1c7b3d546421b934572623dfe820849f8aeec65ff3d9e4b951",
+      "bytes": 5535
+    },
+    {
+      "path": "fixtures/replay_300/seed.csv",
+      "baseline_path": "fixtures/replay_300/seed.csv",
+      "sha256": "058e365e8c0f4059aade74f63c4af9250b80b334491ced219b1b0d1835546cf2",
+      "bytes": 359
+    },
+    {
+      "path": "fixtures/replay_mm/historical-diagnostic.csv",
+      "baseline_path": "fixtures/replay_mm/historical-diagnostic.csv",
+      "sha256": "9b45b9c09a6fc790d662dc337b9f626ba04445025fd75b33e573654ffe065fa7",
+      "bytes": 32988
+    },
+    {
+      "path": "fixtures/replay_mm/historical-matlab.csv",
+      "baseline_path": "fixtures/replay_mm/historical-matlab.csv",
+      "sha256": "c88b0817690019b982ee162300a8a8cdcf7c3152dcd33d3edc92aabd6588dd6c",
+      "bytes": 29060
+    },
+    {
+      "path": "fixtures/replay_mm/initialize.m",
+      "baseline_path": "fixtures/replay_mm/initialize.m",
+      "sha256": "609e4a6533f457e146bb5ad84d2b9f4763671d7d8cca6f11f8809b744433cf15",
+      "bytes": 5521
+    },
+    {
+      "path": "fixtures/replay_mm/seed.csv",
+      "baseline_path": "fixtures/replay_mm/seed.csv",
+      "sha256": "5e0c07073781b31eeb6515bb9415387172f6eb0eccf9e7fed687da4214aa8a5e",
+      "bytes": 365
+    },
+    {
+      "path": "fixtures/replay_mp/historical-diagnostic.csv",
+      "baseline_path": "fixtures/replay_mp/historical-diagnostic.csv",
+      "sha256": "e997a2df99fa8d52908aeefe648ce7133f88bca0a2ef6e0dad2636da9728f57d",
+      "bytes": 32988
+    },
+    {
+      "path": "fixtures/replay_mp/historical-matlab.csv",
+      "baseline_path": "fixtures/replay_mp/historical-matlab.csv",
+      "sha256": "794439926743a8e481aea92a45bf321afbc7ed8550bae1002546c55037778d22",
+      "bytes": 29041
+    },
+    {
+      "path": "fixtures/replay_mp/initialize.m",
+      "baseline_path": "fixtures/replay_mp/initialize.m",
+      "sha256": "1fb37b993392b39804c753981ced149b10e6d18e3672e6d68307829d9ba7db3b",
+      "bytes": 5520
+    },
+    {
+      "path": "fixtures/replay_mp/seed.csv",
+      "baseline_path": "fixtures/replay_mp/seed.csv",
+      "sha256": "99477201a8c1dd5bb6ea2332e298474025acc87de619134d457d79296ae1917b",
+      "bytes": 364
+    },
+    {
+      "path": "fixtures/replay_pm/historical-diagnostic.csv",
+      "baseline_path": "fixtures/replay_pm/historical-diagnostic.csv",
+      "sha256": "afa074d8a6eae8c97591631159272666b9c1133dcd09a5fce55198efafe9bc0a",
+      "bytes": 32646
+    },
+    {
+      "path": "fixtures/replay_pm/historical-matlab.csv",
+      "baseline_path": "fixtures/replay_pm/historical-matlab.csv",
+      "sha256": "ab3b665c516a9a9d96006f47a27a96234a8970aab6efb90718db8d2781ddc33b",
+      "bytes": 28733
+    },
+    {
+      "path": "fixtures/replay_pm/initialize.m",
+      "baseline_path": "fixtures/replay_pm/initialize.m",
+      "sha256": "d939bd49922263349877bbef978c434f19766a0113fbdf47f0355f1308487ab8",
+      "bytes": 5520
+    },
+    {
+      "path": "fixtures/replay_pm/seed.csv",
+      "baseline_path": "fixtures/replay_pm/seed.csv",
+      "sha256": "c61970835d2640a767be0a90cc3e17403cb6238cd5dbc6f6ad06af12b145ff74",
+      "bytes": 364
+    },
+    {
+      "path": "fixtures/replay_pp/historical-diagnostic.csv",
+      "baseline_path": "fixtures/replay_pp/historical-diagnostic.csv",
+      "sha256": "924cc05ba1a51ac66aa0728b42aab00c9e2c836e8c51d671b57281475593e183",
+      "bytes": 32815
+    },
+    {
+      "path": "fixtures/replay_pp/historical-matlab.csv",
+      "baseline_path": "fixtures/replay_pp/historical-matlab.csv",
+      "sha256": "15d8963806d98e77846f2d395b9b34a8b01269e2d8bc7cf9ddd9b27f4ba8a78a",
+      "bytes": 28884
+    },
+    {
+      "path": "fixtures/replay_pp/initialize.m",
+      "baseline_path": "fixtures/replay_pp/initialize.m",
+      "sha256": "34970bf9e6b79eeb8ff1008606d9ac8ebbb9ee11a0a24994da882a45d9109169",
+      "bytes": 5519
+    },
+    {
+      "path": "fixtures/replay_pp/seed.csv",
+      "baseline_path": "fixtures/replay_pp/seed.csv",
+      "sha256": "28089d315f67b9d398e37f3babd014ef12acc27ae70d0650387713a6d3c850a3",
+      "bytes": 359
+    },
+    {
+      "path": "historical-source-hashes.json",
+      "baseline_path": "historical-source-hashes.json",
+      "sha256": "b47a81b3b56832a7378bc84c54fe3166d1699442e2e1946c61d81f5d482c7b60",
+      "bytes": 1335
+    },
+    {
+      "path": "preparation.json",
+      "baseline_path": "preparation.json",
+      "sha256": "1efae900f9dd474238140d8d2fea111a9a94eb1799a7e4f19d4a980df57383a3",
+      "bytes": 12280
+    },
+    {
+      "path": "source/FFT_module.m",
+      "baseline_path": "source/FFT_module.m",
+      "sha256": "00107ac0ad845ba622ddc36dee77418dcb3a3c690cbd3d2e081458f3201951d1",
+      "bytes": 1760
+    },
+    {
+      "path": "source/Hpulsee.m",
+      "baseline_path": "source/Hpulsee.m",
+      "sha256": "1b7b5379e7a8b3cacbf20b41719de8a165c0f4bc05c89883db25ed56c9ea97f4",
+      "bytes": 363
+    },
+    {
+      "path": "source/LLG_solver.m",
+      "baseline_path": "source/LLG_solver.m",
+      "sha256": "97bf13fcb9f87554dacd7e48c306c0f7d5252bc4143ef16f959ee27ea09b709c",
+      "bytes": 1378
+    },
+    {
+      "path": "source/SOURCE_SHA256SUMS",
+      "baseline_path": "source/SOURCE_SHA256SUMS",
+      "sha256": "323cad2ab021cd5864ceb99e26ccb8c72517654b6e7b85225b2f1771a7f63b73",
+      "bytes": 1080
+    },
+    {
+      "path": "source/conf_file.m",
+      "baseline_path": "source/conf_file.m",
+      "sha256": "722720ef85848363f7b0b75f27d700852a2c634831a9bd7504160e102a82b879",
+      "bytes": 374
+    },
+    {
+      "path": "source/constantfile.m",
+      "baseline_path": "source/constantfile.m",
+      "sha256": "17b95d335c43a399f9a124d2e9fde2270b1ad0402cfc49ec4994f641cebd0f9f",
+      "bytes": 204
+    },
+    {
+      "path": "source/datproc.m",
+      "baseline_path": "source/datproc.m",
+      "sha256": "889f53a018c5c690ec4a18009517c693dabeb1b2be6f408dd95d3ff516a4c907",
+      "bytes": 3325
+    },
+    {
+      "path": "source/field_eta.m",
+      "baseline_path": "source/field_eta.m",
+      "sha256": "af0e072af0aa96a25633b90494d4df1f652bc7fe17a9d4b74253719ac21a402c",
+      "bytes": 8860
+    },
+    {
+      "path": "source/main.m",
+      "baseline_path": "source/main.m",
+      "sha256": "8092c214925d2297b15ae8380e57fdcd91840b497816eadf0fadd96fc788b516",
+      "bytes": 10644
+    },
+    {
+      "path": "source/pulsee.m",
+      "baseline_path": "source/pulsee.m",
+      "sha256": "7e05ad23e1ad51a2156e0ef46d34ec930f959f74fdfd6371aabacb0105eecb02",
+      "bytes": 1546
+    },
+    {
+      "path": "source/rk4_4llg.m",
+      "baseline_path": "source/rk4_4llg.m",
+      "sha256": "bc312edc39df4792304f48ae8a67c69dc61edbcc1a640a4ce19af812d16ad260",
+      "bytes": 10858
+    },
+    {
+      "path": "source/theta_mtot.m",
+      "baseline_path": "source/theta_mtot.m",
+      "sha256": "f13a9dc1ceda0aff1a91aad3fe4105b047387cf1b92d15b3a21c631e3d430c53",
+      "bytes": 634
+    },
+    {
+      "path": "repeat-1/default_5ns/result.txt",
+      "baseline_path": "text/default_5ns.txt",
+      "sha256": "60c525c3c5d6169f2c51a9e95bedf2aff1ad600bade9d00b294b246c5304d39f",
+      "bytes": 2475436
+    },
+    {
+      "path": "repeat-1/pilot/result.txt",
+      "baseline_path": "text/pilot.txt",
+      "sha256": "94cc0e0511acdc09af40e6065e63d79e3b21335324c343aaea5c0df577881653",
+      "bytes": 9598
+    },
+    {
+      "path": "repeat-1/pulse_edges/result.txt",
+      "baseline_path": "text/pulse_edges.txt",
+      "sha256": "abce03ea1934df1f5093f6e239d7e86742726eca48f852d6426f54e9d054b735",
+      "bytes": 9598
+    },
+    {
+      "path": "repeat-1/replay_1000m/result.txt",
+      "baseline_path": "text/replay_1000m.txt",
+      "sha256": "7f788606ac0c016d7f66f8c1f8eeb0364abf8ffed2aaa1181b13d725ba375c4d",
+      "bytes": 9598
+    },
+    {
+      "path": "repeat-1/replay_1000p/result.txt",
+      "baseline_path": "text/replay_1000p.txt",
+      "sha256": "3ff9bd86a6f27ca836043a9f9a5ed5d3bc95685e0b99704ef3446e6d57bee7da",
+      "bytes": 9598
+    },
+    {
+      "path": "repeat-1/replay_275/result.txt",
+      "baseline_path": "text/replay_275.txt",
+      "sha256": "0447e05e15f97e484aadbfca135e7178238066fda2bd81eba60109ff937a59f9",
+      "bytes": 9598
+    },
+    {
+      "path": "repeat-1/replay_300/result.txt",
+      "baseline_path": "text/replay_300.txt",
+      "sha256": "40d93fcb3694a346173d3bf5cbeb2ffa66adea15335db75902fb3f3a0018a1de",
+      "bytes": 9598
+    },
+    {
+      "path": "repeat-1/replay_mm/result.txt",
+      "baseline_path": "text/replay_mm.txt",
+      "sha256": "218d2548281893d468ee2b47beb7969f94f008f45e6518d2d4ae2ee3dc324ee7",
+      "bytes": 9598
+    },
+    {
+      "path": "repeat-1/replay_mp/result.txt",
+      "baseline_path": "text/replay_mp.txt",
+      "sha256": "237a5e380e92facc67b776a674d9866f49b8a60420fac580650288c049a60233",
+      "bytes": 9598
+    },
+    {
+      "path": "repeat-1/replay_pm/result.txt",
+      "baseline_path": "text/replay_pm.txt",
+      "sha256": "a07671529f944fef93f7ed6d170a047b6f767261e826ad8f4a9156d3151b5f2f",
+      "bytes": 9598
+    },
+    {
+      "path": "repeat-1/replay_pp/result.txt",
+      "baseline_path": "text/replay_pp.txt",
+      "sha256": "82b465dd56ae517dda8959c61e9b4175ffbbb065ec68be9fd6bedb334db11f1b",
+      "bytes": 9598
+    },
+    {
+      "path": "tools/prepare_reference.m",
+      "baseline_path": "tools/prepare_reference.m",
+      "sha256": "fa8e12485cf7b8fbc571b6044f8b008588a2a4aa26b1f7584714653229290a58",
+      "bytes": 18377
+    },
+    {
+      "path": "tools/regression_cases.m",
+      "baseline_path": "tools/regression_cases.m",
+      "sha256": "3eca60e269e2ff6567181d0281a707e0d97f622f8e7793ebed2db39e8163b1ef",
+      "bytes": 1014
+    }
+  ],
+  "total_selected_bytes": 5463738,
+  "baseline_root": "benchmark/baseline"
+}

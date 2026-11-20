@@ -1,0 +1,17 @@
+{
+  "conf_file.m": "722720ef85848363f7b0b75f27d700852a2c634831a9bd7504160e102a82b879",
+  "constantfile.m": "17b95d335c43a399f9a124d2e9fde2270b1ad0402cfc49ec4994f641cebd0f9f",
+  "datproc.m": "889f53a018c5c690ec4a18009517c693dabeb1b2be6f408dd95d3ff516a4c907",
+  "FFT_module.m": "00107ac0ad845ba622ddc36dee77418dcb3a3c690cbd3d2e081458f3201951d1",
+  "field_eta.m": "af0e072af0aa96a25633b90494d4df1f652bc7fe17a9d4b74253719ac21a402c",
+  "Hpulsee.m": "1b7b5379e7a8b3cacbf20b41719de8a165c0f4bc05c89883db25ed56c9ea97f4",
+  "LLG_solver.m": "97bf13fcb9f87554dacd7e48c306c0f7d5252bc4143ef16f959ee27ea09b709c",
+  "main.m": "8092c214925d2297b15ae8380e57fdcd91840b497816eadf0fadd96fc788b516",
+  "pulsee.m": "7e05ad23e1ad51a2156e0ef46d34ec930f959f74fdfd6371aabacb0105eecb02",
+  "rk4_4llg.m": "bc312edc39df4792304f48ae8a67c69dc61edbcc1a640a4ce19af812d16ad260",
+  "theta_mtot.m": "f13a9dc1ceda0aff1a91aad3fe4105b047387cf1b92d15b3a21c631e3d430c53",
+  "verification/analyze_figures.m": "071c614432fa699806999f4eb3e5f63158771dbe42657b29ff617a3a385c69b5",
+  "verification/check_matlab.m": "7d0f66872da9079e6253616e556afa02bb0d3075c9053e8d43c560e147142ce7",
+  "verification/diagnostic.c": "b556a3ac5d5ab7136fc368a70d9bf1f7f4dd9fbc5b280425a236bf06dcf28458",
+  "verification/run_checks.py": "d918518c635f1b67c3a8ffccddf9930a347f94080144cf6fe771ee7580160f5d"
+}

@@ -1,6 +1,10 @@
 # RK4 correction and verification of Figures 2, 4, and 5
 
-The production correction changes only the six fourth-stage states in
+Historical numerical results below were recorded on 2026-10-29. Commands were
+updated for protected destinations on 2026-11-20; current interface verification
+is in the [CQ report](code-quality-verification.md).
+
+The numerical correction changes only the six fourth-stage states in
 `rk4_4llg.m` from `m + k3*dt/2` to `m + k3*dt`. The second and third stages
 remain half steps; weights and final normalization are unchanged. The model
 is the existing spatially uniform, fixed-length, three-sublattice noncollinear
@@ -13,8 +17,8 @@ Physical Review B **109**, 134433 (2024),
 [DOI: 10.1103/PhysRevB.109.134433](https://doi.org/10.1103/PhysRevB.109.134433).
 The reviewed paper-KB record and indexed PDF were consulted, specifically
 Sec. II, Fig. 2, Table I, and printed page 134433-5 (Figs. 4 and 5).
-The exact KB ID and unchanged Hamiltonian/field conventions are in
-[plan.md](../plan.md). The equations reference files consulted were
+The exact KB ID and unchanged Hamiltonian/field conventions are retained in
+[the original audit](fig2-4-original-audit.md). The equations reference files consulted were
 `spintronic_methods.tex`, `sections/llg_equation.tex` (`eq:llg-gilbert`,
 `eq:ll-with-flt`), and `sections/material_parameters.tex`; they corroborate
 the existing flux-density units and torque signs. No physical parameters,
@@ -168,7 +172,7 @@ packages), and MATLAB. No installation or new environment is needed. Run the
 following from the repository root in Bash/WSL:
 
 ```bash
-python3 verification/run_checks.py prepare
+python3 verification/run_checks.py prepare --out .sisyphus/rk4-verification-<unique>
 ```
 
 Then, with MATLAB's current directory set to the repository root:
@@ -176,21 +180,21 @@ Then, with MATLAB's current directory set to the repository root:
 ```matlab
 repo = pwd;
 addpath(fullfile(repo,'verification'));
-out = fullfile(repo,'.sisyphus','rk4-verification-20261029');
-check_matlab(out);
+out = fullfile(repo,'.sisyphus','rk4-verification-<unique>');
+check_matlab(out,'pilot');
 ```
 
 After the analytical and pilot gates pass, run in Bash/WSL:
 
 ```bash
-python3 verification/run_checks.py sweep
-python3 verification/run_checks.py replays
+python3 verification/run_checks.py sweep --out .sisyphus/rk4-verification-<unique>
+python3 verification/run_checks.py replays --out .sisyphus/rk4-verification-<unique>
 ```
 
 Finish in MATLAB:
 
 ```matlab
-check_matlab(out);
+check_matlab(out,'full');
 analyze_figures(out);
 ```
 
@@ -200,7 +204,9 @@ writing a separate file. Compilation uses
 adds `-DLEGACY_STAGE`. The diagnostic supports only this audit's deterministic
 parameter configuration and is not a replacement production solver.
 
-These commands write or replace verification artifacts only under
+Replace `<unique>` with the same unused name in every command. Preparation
+refuses an existing destination; MATLAB checks use separate pilot/full CSV names
+and reject existing outputs. The historical artifacts remain under
 `.sisyphus/rk4-verification-20261029/`. They do not execute `main.m` in the
 repository root or touch the original publication archive. Raw data require
 approximately 1.5 GB. The source hashes, MATLAB checks, `analysis.json`,
@@ -238,9 +244,10 @@ endpoints are the common last sampled time, 4.99975 ns. The diagnostic's
 stdout additionally reports its final integrated state.
 
 The original [audit](fig2-4-original-audit.md) is preserved as historical
-evidence. All eleven unchanged distributed files still match
+evidence. At the 2026-10-29 audit, all eleven unchanged distributed files matched
 `SOURCE_SHA256SUMS`; the corrected integrator intentionally differs by six
-lines and preserves CRLF. The local archived `result.txt` also matches;
+lines and preserved CRLF. The later API migration also changes `main.m`,
+`field_eta.m` and integrator persistence; see the current README for preservation checks. The local archived `result.txt` also matches;
 the original `final.mat` is absent, so its checksum cannot be checked.
 The manifest itself is unchanged. Use
 `git -c core.whitespace=cr-at-eol diff --check` when checking the preserved

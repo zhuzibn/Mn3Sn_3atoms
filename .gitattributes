@@ -1,3 +1,7 @@
 # Preserve archived source bytes in the Git index and on checkout.
 *.m -text
 PBSScript -text
+
+# Accepted artifacts and their historical proposal require exact byte identity.
+/benchmark/baseline/** -text
+/benchmark/reference_proposal.json -text

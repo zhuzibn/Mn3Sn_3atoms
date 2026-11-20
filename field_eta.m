@@ -32,8 +32,8 @@
 %5. sotflt, STT DLT cofficient, double, [Tesla]
 function [hh_Fe1,hh_Fe2,hh_Fe3,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe,hh_Gd1,hh_Gd2,hh_Gd3,sttdlt_Gd,sttflt_Gd,sotdlt_Gd,sotflt_Gd]=field_eta(hk6,mmm_Fe1,mmm_Fe2,mmm_Fe3,mmm_Gd1,mmm_Gd2,mmm_Gd3,Hk_Fe_z,Hk_Gd_z,Hk_Fe_x,Hk_Gd_x,Demag_,Hext,jc_STT,...
     tFL,Ms_Fe,Ms_Gd,facFLT_SHE,K12Dipole,mmmPL,PolFL,lFL,wFL,facFLT_STT,...
-    thetaSH,tHM,lambdaSF,jc_SOT,TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI)
-conf_file();%load configuration
+    thetaSH,tHM,lambdaSF,jc_SOT,TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI,flags)
+SOT_DLT=flags.SOT_DLT; STT_DLT=flags.STT_DLT; dipolee=flags.dipolee;
 constantfile();%load constant
 %% phi(abc)
 % hk_Fe1=2*hk6*[0,cos(pi/6),sin(pi/6)].*mmm_Fe1.*[0,cos(pi/6),sin(pi/6)];%phi1

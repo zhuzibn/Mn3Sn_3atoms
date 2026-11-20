@@ -1,19 +1,19 @@
 """Standard-library-only runner; GCC and MATLAB are external prerequisites.
 
-Run from repository root: python3 verification/run_checks.py prepare
-Then run check_matlab(output_directory) in MATLAB before the sweep stage.
+Run from repository root with an explicit fresh --out directory.
+Then run check_matlab(output_directory, 'pilot') before the optional sweep.
 """
 import csv
+import argparse
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
 from pathlib import Path
 import shutil
 import subprocess
-import sys
 
 REPO = Path(__file__).resolve().parents[1]
-OUT = REPO / '.sisyphus/rk4-verification-20261029'
+OUT = None
 
 
 def compile_diagnostic(legacy=False):
@@ -27,6 +27,8 @@ def compile_diagnostic(legacy=False):
 def run_case(name, seed, field, current, dt=5, legacy=False,
              duration=5, start=1, width=3, seed_file=None):
     path = OUT / (name + '.csv')
+    if path.exists():
+        raise FileExistsError(path)
     args = [str(OUT / ('legacy' if legacy else 'corrected')), str(path),
             str(seed), str(field * 1e-4), str(current), str(duration),
             str(start), str(width), str(dt)]
@@ -39,16 +41,25 @@ def run_case(name, seed, field, current, dt=5, legacy=False,
 
 def matlab_copy(name, field=0, current=0, seed=210, legacy=False):
     folder = OUT / name
-    folder.mkdir(exist_ok=True)
+    folder.mkdir(exist_ok=False)
     for p in REPO.glob('*.m'):
         shutil.copy2(p, folder / p.name)
     if legacy:
         p = folder / 'rk4_4llg.m'
         data = p.read_bytes()
         for spin in ('Fe1', 'Fe2', 'Fe3', 'Gd1', 'Gd2', 'Gd3'):
+            assert data.count(f'kk3_{spin}*ts1;'.encode()) == 1
             data = data.replace(f'kk3_{spin}*ts1;'.encode(), f'kk3_{spin}*ts1/2;'.encode())
         p.write_bytes(data)
-    source = (REPO / 'main.m').read_text().split('\nrk4_4llg();')[0]
+    # Fixed pre-migration initialization is a benchmark fixture, not a second
+    # production default interface. Always execute the current numerical files.
+    source_path = REPO / 'benchmark/baseline/source/main.m'
+    manifest = json.loads((REPO / 'benchmark/baseline_manifest.json').read_text())
+    entry = next(x for x in manifest['artifacts'] if x['baseline_path'] == 'source/main.m')
+    assert hashlib.sha256(source_path.read_bytes()).hexdigest() == entry['sha256']
+    source_parts = source_path.read_text().split('\nrk4_4llg();')
+    assert len(source_parts) == 2
+    source = source_parts[0]
     source = source.replace('clear ;clc;close all;', '').replace('\ntic\n', '\n')
     source = source.replace('runtime=5000e-12;', 'runtime=20e-12;')
     source = source.replace('starttime=1000e-12;', 'starttime=0;')
@@ -56,12 +67,13 @@ def matlab_copy(name, field=0, current=0, seed=210, legacy=False):
     source = source.replace('Hext=[0,0.0250,0];', f'Hext=[0,{field*1e-4:.17g},0];')
     source = source.replace('jc_SOT=50e9;', f'jc_SOT={current:.17g};')
     source = source.replace('inita_theta=210/180*pi;', f'inita_theta={seed}/180*pi;')
+    source += "\nflags=struct('SOT_DLT',SOT_DLT,'STT_DLT',STT_DLT,'dipolee',dipolee);\n"
     (folder / 'initialize.m').write_text(source)
     return folder
 
 
 def prepare():
-    OUT.mkdir(parents=True, exist_ok=True)
+    OUT.mkdir(parents=True, exist_ok=False)
     compile_diagnostic()
     compile_diagnostic(True)
     matlab_copy('analytical_0')
@@ -88,7 +100,7 @@ def cases():
 
 
 def sweep():
-    gate = json.loads((OUT / 'matlab-checks.json').read_text())
+    gate = json.loads((OUT / 'matlab-checks-pilot.json').read_text())
     assert gate['crosschecks']['pilot'] < 1e-10
     # Independent child processes write distinct files. Collect every failure.
     with ThreadPoolExecutor(max_workers=8) as pool:
@@ -129,5 +141,34 @@ def replays():
         shutil.copy2(path, folder / 'diagnostic.csv')
 
 
+def accepted_replays():
+    """Reuse accepted fixed seeds/C arrays without rerunning the full figure sweep."""
+    baseline = REPO / 'benchmark/baseline'
+    manifest = json.loads((REPO / 'benchmark/baseline_manifest.json').read_text())
+    assert manifest['accepted']
+    for item in manifest['artifacts']:
+        assert hashlib.sha256((baseline / item['baseline_path']).read_bytes()).hexdigest() == item['sha256']
+    for case in manifest['cases']:
+        if not case['seed_file']:
+            continue
+        folder = matlab_copy(case['name'], case['field_T'] / 1e-4, case['current_Apm2'])
+        fixture = baseline / 'fixtures' / case['name']
+        shutil.copy2(fixture / 'seed.csv', folder / 'seed.csv')
+        shutil.copy2(fixture / 'historical-diagnostic.csv', folder / 'diagnostic.csv')
+
+
 if __name__ == '__main__':
-    {'prepare':prepare, 'sweep':sweep, 'replays':replays}[sys.argv[1]]()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('action', choices=['prepare', 'sweep', 'replays', 'accepted-replays'])
+    parser.add_argument('--out', required=True, type=Path)
+    args = parser.parse_args()
+    OUT = args.out.resolve()
+    baseline = (REPO / 'benchmark/baseline').resolve()
+    if OUT == baseline or baseline in OUT.parents:
+        parser.error('verification outputs cannot be inside the accepted baseline')
+    if args.action != 'prepare':
+        hashes = json.loads((OUT / 'source-hashes.json').read_text())
+        for name, digest in hashes.items():
+            assert hashlib.sha256((REPO / name).read_bytes()).hexdigest() == digest, name
+    {'prepare':prepare, 'sweep':sweep, 'replays':replays,
+     'accepted-replays':accepted_replays}[args.action]()

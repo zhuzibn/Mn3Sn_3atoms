@@ -46,6 +46,7 @@ end
 ts1=tstep*tau_c; %time step
 
 ct1=1; %count 1
+legacy_text_rows=zeros(floor((totstep-1)/tstepcount),7);
 t=linspace(0,runtime,totstep);
 mmx=zeros(totstep,6);%(:,1)is Fe, (:,2)is Gd
 mmy=zeros(totstep,6);
@@ -91,7 +92,7 @@ while ct1<totstep
     [hh_Fe1,hh_Fe2,hh_Fe3,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe,hh_Gd1,hh_Gd2,hh_Gd3,sttdlt_Gd,sttflt_Gd...
         ,sotdlt_Gd,sotflt_Gd]=field_eta(hk6,mmm_Fe1,mmm_Fe2,mmm_Fe3,mmm_Gd1,mmm_Gd2,mmm_Gd3,Hk_Fe_z,Hk_Gd_z,Hk_Fe_x,Hk_Gd_x,Demag_,Hext_pulse(1,:,ct1),jc_STT,...
         tFL,Ms_Fe,Ms_Gd,facFLT_SHE,K12Dipole,mmmPL,PolFL,LFL,WFL,facFLT_STT,...
-        thetaSH,tHM,lambdaSF,jc_SOTpulse(1,ct1),TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI);
+        thetaSH,tHM,lambdaSF,jc_SOTpulse(1,ct1),TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI,flags);
     [dmdt_Fe1,AA,AB,BA,BB,CA,CB,Heffective]=LLG_solver(alp,mmm_Fe1,hh_Fe1,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
     dmdt_Fe2=LLG_solver(alp,mmm_Fe2,hh_Fe2,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
     dmdt_Fe3=LLG_solver(alp,mmm_Fe3,hh_Fe3,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
@@ -116,7 +117,7 @@ while ct1<totstep
     [hh_Fe1,hh_Fe2,hh_Fe3,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe,hh_Gd1,hh_Gd2,hh_Gd3,sttdlt_Gd,sttflt_Gd...
         ,sotdlt_Gd,sotflt_Gd]=field_eta(hk6,mmm_Fe1,mmm_Fe2,mmm_Fe3,mmm_Gd1,mmm_Gd2,mmm_Gd3,Hk_Fe_z,Hk_Gd_z,Hk_Fe_x,Hk_Gd_x,Demag_,Hext_pulse(1,:,ct1),jc_STT,...
         tFL,Ms_Fe,Ms_Gd,facFLT_SHE,K12Dipole,mmmPL,PolFL,LFL,WFL,facFLT_STT,...
-        thetaSH,tHM,lambdaSF,jc_SOTpulse(1,ct1),TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI);
+        thetaSH,tHM,lambdaSF,jc_SOTpulse(1,ct1),TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI,flags);
     [dmdt_Fe1,AA,AB,BA,BB,CA,CB,Heffective]=LLG_solver(alp,mmm_Fe1,hh_Fe1,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
     dmdt_Fe2=LLG_solver(alp,mmm_Fe2,hh_Fe2,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
     dmdt_Fe3=LLG_solver(alp,mmm_Fe3,hh_Fe3,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
@@ -141,7 +142,7 @@ while ct1<totstep
     [hh_Fe1,hh_Fe2,hh_Fe3,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe,hh_Gd1,hh_Gd2,hh_Gd3,sttdlt_Gd,sttflt_Gd...
         ,sotdlt_Gd,sotflt_Gd]=field_eta(hk6,mmm_Fe1,mmm_Fe2,mmm_Fe3,mmm_Gd1,mmm_Gd2,mmm_Gd3,Hk_Fe_z,Hk_Gd_z,Hk_Fe_x,Hk_Gd_x,Demag_,Hext_pulse(1,:,ct1),jc_STT,...
         tFL,Ms_Fe,Ms_Gd,facFLT_SHE,K12Dipole,mmmPL,PolFL,LFL,WFL,facFLT_STT,...
-        thetaSH,tHM,lambdaSF,jc_SOTpulse(1,ct1),TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI);
+        thetaSH,tHM,lambdaSF,jc_SOTpulse(1,ct1),TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI,flags);
     [dmdt_Fe1,AA,AB,BA,BB,CA,CB,Heffective]=LLG_solver(alp,mmm_Fe1,hh_Fe1,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
     dmdt_Fe2=LLG_solver(alp,mmm_Fe2,hh_Fe2,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
     dmdt_Fe3=LLG_solver(alp,mmm_Fe3,hh_Fe3,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
@@ -166,7 +167,7 @@ while ct1<totstep
     [hh_Fe1,hh_Fe2,hh_Fe3,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe,hh_Gd1,hh_Gd2,hh_Gd3,sttdlt_Gd,sttflt_Gd...
         ,sotdlt_Gd,sotflt_Gd]=field_eta(hk6,mmm_Fe1,mmm_Fe2,mmm_Fe3,mmm_Gd1,mmm_Gd2,mmm_Gd3,Hk_Fe_z,Hk_Gd_z,Hk_Fe_x,Hk_Gd_x,Demag_,Hext_pulse(1,:,ct1),jc_STT,...
         tFL,Ms_Fe,Ms_Gd,facFLT_SHE,K12Dipole,mmmPL,PolFL,LFL,WFL,facFLT_STT,...
-        thetaSH,tHM,lambdaSF,jc_SOTpulse(1,ct1),TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI);
+        thetaSH,tHM,lambdaSF,jc_SOTpulse(1,ct1),TT,alp,tstep,thermalnois,Hex_1,Hex_2,Hk_Fe_y,Hk_Gd_y,jc_SOT2,DMI,flags);
     [dmdt_Fe1,AA,AB,BA,BB,CA,CB,Heffective]=LLG_solver(alp,mmm_Fe1,hh_Fe1,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
     dmdt_Fe2=LLG_solver(alp,mmm_Fe2,hh_Fe2,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
     dmdt_Fe3=LLG_solver(alp,mmm_Fe3,hh_Fe3,polSOTD_Fe,polSOTF_Fe,PolSTT,sttdlt_Fe,sttflt_Fe,sotdlt_Fe,sotflt_Fe);
@@ -204,9 +205,7 @@ while ct1<totstep
     
     if mod(ct1,tstepcount)==0%      
         A=[(t(ct1))*1e12;mmx(ct1+1,1);mmy(ct1+1,1);mmz(ct1+1,1);mmx(ct1+1,2);mmy(ct1+1,2);mmz(ct1+1,2)];
-       fileID = fopen('result.txt','a');
-        fprintf(fileID,'%4.4f %8.4f %12.4f %16.4f %20.4f %24.4f %28.4f\n',A);
-        fclose(fileID);
+        legacy_text_rows(ct1/tstepcount,:)=A';
     end
     
     ct1=ct1+1;

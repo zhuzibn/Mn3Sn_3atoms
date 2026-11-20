@@ -14,10 +14,13 @@ uniform model. `main.m` runs one parameter case rather than the complete Fig. 5 
 
 | File | Purpose |
 | --- | --- |
-| `main.m` | Entry script: parameters, initial conditions, pulses, solver call, and workspace save. |
+| `main.m` | Default caller of the validated API; exposes legacy plotting aliases. |
+| `mn3sn_default_config.m`, `mn3sn_validate_config.m` | Editable input defaults and pre-integration validation. |
+| `mn3sn_run.m` | Private initialization, integration orchestration, fresh output directory and versioned save. |
+| `mn3sn_sha256.m`, `mn3sn_resolve_path.m` | Source/file identity and destination resolution, including junctions. |
 | `conf_file.m` | Switches for torques, thermal noise, and other model options. |
 | `constantfile.m` | Physical constants used by the scripts. |
-| `rk4_4llg.m` | Time-stepping script, magnetization normalization, sampling, and text output. |
+| `rk4_4llg.m` | Time-stepping script, normalization, sampling, and legacy text-row collection. |
 | `LLG_solver.m` | Magnetization time derivative and torque components. |
 | `field_eta.m` | Effective fields and torque coefficients. |
 | `pulsee.m`, `Hpulsee.m` | Current and applied-field pulse construction. |
@@ -28,34 +31,63 @@ uniform model. `main.m` runs one parameter case rather than the complete Fig. 5 
 
 ## Run
 
-Run MATLAB from the directory containing `main.m` and the companion `.m` files.
-For a new run, use a separate source copy to preserve existing results. From the
-repository root in Bash/WSL:
+Use MATLAB with Java enabled (tested: R2024b Update 1, Windows CPU). No GPU
+or additional toolbox is needed for the supported deterministic path. Git is
+optional for execution; its actual metadata probe outcome is saved. From MATLAB
+in the repository root:
 
-```bash
-run_dir=$(mktemp -d -t Mn3Sn_3atoms.XXXXXX)
-cp -- ./*.m "$run_dir/"
-cd "$run_dir"
-matlab -batch "run('main.m')"
+```matlab
+main
 ```
 
-The outputs remain in that temporary directory; copy any results you need to a
-permanent location. In the MATLAB desktop, open a separate copy of the source
-folder, set it as the current folder, and run `main`.
+This runs the original defaults: 250 Oe (`[0,0.0250,0]` T), current density
+$5\times10^{10}$ A/m$^2$, damping 0.003, 5 fs timestep, 1 ns relaxation,
+drive from 1 to 4 ns, and relaxation until 5 ns. A full default run takes several
+minutes. `main` always recreates defaults; use the API below for overrides.
+Outputs go to a new `.sisyphus/runs/<unique-id>/` directory printed on completion.
 
-The CPU path has previously been exercised with MATLAB R2024b. The default
-configuration does not require a GPU; the archived `PBSScript` requests a GPU
-queue and needs adaptation to a particular cluster. Thermal noise is disabled;
-enabling it uses `normrnd` (Statistics and Machine Learning Toolbox).
+## Custom parameters
 
-Defaults in `main.m` include a 250 Oe field, current density $5\times10^{10}$ A/m$^2$,
-damping 0.003, a 5 fs timestep, 1 ns initial relaxation, drive from 1 to 4 ns,
-and relaxation until 5 ns. Parameters and switches are in `main.m` and `conf_file.m`.
+This complete example is a short illustrative pulse test, not a new validated
+material parameter set. Run it with the repository on the MATLAB path:
 
-See [Fig. 2 and Fig. 4(a) settings](FIG2_FIG4_SETTINGS.md) for panel-specific
-parameters, initial-state mapping, plotting instructions, and verification limits.
-See [RK4 correction verification](docs/rk4-verification.md) for checks of
-Figures 2, 4(a), and 5, timestep convergence, and reproducible verification commands.
+```matlab
+cfg = mn3sn_default_config();
+cfg.alp = 0.003;             % dimensionless Gilbert damping
+cfg.Hext = [0,0.0250,0];     % tesla (250 Oe)
+cfg.jc_SOT = 5e10;           % A/m^2, signed current
+cfg.runtime = 20e-12;        % seconds
+cfg.starttime = 5e-12;
+cfg.pulsewidth = 10e-12;
+result = mn3sn_run(cfg);     % returns result and saves to a fresh directory
+```
+
+The factory is the complete editable-input list. Inputs are finite real doubles;
+flags may also be logical. `initial_m` contains six unit rows in x/y/z order.
+Time values are seconds, `tFL` is metres, `Ms_Fe/Ms_Gd` are emu/cm³, `Hex_2`
+and `Hext` are tesla, and `hk_constant/DMI_constant` are joules. Timestep,
+runtime, thickness and magnetizations must be positive; `savestep` is a positive
+integer. Pulse segments and their rounded step counts must fit the runtime.
+Constants remain in `constantfile.m`; pulse arrays and field coefficients are
+derived by the runner. `conf_file.m` supplies factory switch defaults only.
+
+Supported scope: dimensional deterministic RK4, DLT on/off, zero intertriplet
+coupling, zero STT/FLT amplitudes, zero dipole/demagnetization, and no noise.
+Unsupported switches, unknown/missing fields and invalid inputs raise errors
+before integration. Keeping `SOT_FLT=1` with `jc_SOT2=0` preserves the default
+zero FLT amplitude; it does not enable a tested finite-FLT model.
+
+For a chosen location, call `mn3sn_run(cfg,fullfile(existing_parent,'new-run'))`.
+The parent must exist and the destination must be new. Existing destinations and
+paths into `benchmark/baseline/`, including resolved links/junctions, are rejected.
+Move results needed long-term from ignored `.sisyphus` to your own data storage.
+
+See [Fig. 2 and Fig. 4(a) settings](FIG2_FIG4_SETTINGS.md) for panel inputs and
+signed plotting. [Benchmark commands](benchmark/README.md) cover ten quick cases,
+one explicit full-default case, and focused tests. The
+[CQ verification report](docs/code-quality-verification.md) records acceptance,
+measurements and limitations; the [RK4 report](docs/rk4-verification.md) retains
+the earlier figure/convergence evidence.
 
 ## Verified figure reproductions
 
@@ -97,31 +129,48 @@ current signs produce different tilt angles, approximately 83.83 and
 
 ## Outputs
 
-`main.m` overwrites `final.mat` with the workspace. `rk4_4llg.m` appends rows to
-`result.txt`; the header/reset block in `main.m` is disabled. Preserve existing
-results or run in a separate copy before launching. Both files are ignored by
-Git and are absent from a fresh checkout; any archived copies are local only.
+Each fresh run contains `final.mat` with **only `result`**, schema version 1,
+and one `result.txt`. These replace the legacy full-workspace/append interface.
+Existing archived files remain untouched.
 
-- With the default settings, `final.mat` contains the sampled `tt` time vector
-  in seconds and the `mmx`, `mmy`, and `mmz` arrays. Their six columns follow the two triplets in order:
-  `ma_init1`, `ma_init2`, `ma_init3`, `mb_init1`, `mb_init2`, `mb_init3`.
-- `result.txt` has seven columns: time in picoseconds, followed by the x, y, z
-  components of the first and second spins of the first triplet. It does not
-  contain all six spins, and repeated runs append without a run separator.
+- `config`, `effective_inputs`, `initial_m`, units and state order identify the
+  actual calculation; `mmx/mmy/mmz` are sample-by-six arrays ordered
+  `ma1,ma2,ma3,mb1,mb2,mb3`.
+- `time_s` gives physical times. `legacy_tt` retains the original `linspace`
+  labels. Solver metadata distinguishes requested, integrated and sampled ends.
+- `provenance` contains UTC time, resolved source hashes, actual Git probes,
+  MATLAB/toolboxes/platform, available CPU information and RNG states. No random
+  draw occurs in the supported path.
+- `result.txt` preserves the exact seven-column legacy formatting: old time label
+  in ps and x/y/z of ma1 and ma2. At step `q` it records state `q+1` but label
+  `t(q)`; physical time is `q*tstep`. It has its own sampling metadata and hash.
 
-To inspect a completed run in MATLAB, use `load('final.mat')` in its output
-directory. `theta_mtot` uses the loaded workspace to produce an angle plot;
-its angular-sign limitation is described below.
+Load and plot without rebuilding a workspace:
+
+```matlab
+saved = load(fullfile(result.output_dir,'final.mat'),'result');
+r = saved.result;
+plot(r.time_s*1e9,mean(r.mmz(:,1:3),2));
+xlabel('Time (ns)'); ylabel('Mean active-spin z');
+```
+
+`main` exposes `tt`, `mmx`, `mmy`, and `mmz` for existing workspace plots.
+For the unchanged `theta_mtot` helper, also set
+`totstep=result.effective_inputs.totstep; savestep=result.config.savestep;`.
+Its unsigned-angle limitation remains; prefer the signed example in the figure
+settings. Legacy helpers expecting full-workspace MAT variables require explicit
+extraction from `result` and are not the maintained save interface.
 
 ## Preservation and limitations
 
 `SOURCE_SHA256SUMS` records all 14 original files, including the two local result
-files. Ten MATLAB files and `PBSScript` retain their original bytes;
-`rk4_4llg.m` has six intentional fourth-stage changes and retains its CRLF
-line endings. From the repository root, check the unchanged distributed files:
+files. Eight MATLAB files and `PBSScript` retain their original bytes.
+`main.m`, `field_eta.m`, and `rk4_4llg.m` intentionally differ: the default
+caller, explicit switches, RK4 correction and text-persistence separation.
+All three retain their original CRLF line endings. From the repository root, check the unchanged distributed files:
 
 ```bash
-rg '  (.*\.m|PBSScript)$' SOURCE_SHA256SUMS | rg -v '  rk4_4llg.m$' | sha256sum -c -
+rg '  (.*\.m|PBSScript)$' SOURCE_SHA256SUMS | rg -v '  (main|field_eta|rk4_4llg)\.m$' | sha256sum -c -
 ```
 
 To check an untouched original archive containing both original result files:
@@ -131,10 +180,11 @@ sha256sum -c SOURCE_SHA256SUMS
 ```
 
 The complete check requires the original results and original integrator;
-the corrected integrator and newly generated outputs are not expected to
-match their archived hashes. These checks verify preservation, not numerical
-correctness. Focused deterministic verification tools are in `verification/`;
-they do not constitute a general regression suite for every configuration.
+the maintained sources and newly generated outputs are not expected to
+match all archived hashes. These checks verify preservation, not numerical
+correctness. Accepted regression artifacts are in `benchmark/baseline/`; the manifest records
+explicit user acceptance and all 75 file hashes. Candidate runs never update
+references. The suite covers the declared deterministic cases, not every configuration.
 
 Remaining known issues: `theta_mtot.m` discards angular sign, and saved time
 labels differ from physical integration times by up to approximately 5 fs
